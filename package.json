@@ -17,11 +17,24 @@
   "license": "MIT",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "./src/scripts/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "format": "prettier --write .",
+    "check": "astro check",
+    "sync": "astro sync",
+    "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.14.1"
+    "@astrojs/react": "^4.4.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/vue": "^5.1.1",
+    "@tailwindcss/vite": "^4.1.14",
+    "astro": "^5.14.1",
+    "react": "^19.2.0",
+    "typescript": "^5.9.3"
   }
 }
