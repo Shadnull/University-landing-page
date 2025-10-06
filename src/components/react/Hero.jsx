@@ -91,7 +91,7 @@ export default function Hero() {
                 />
             </motion.div>
                 <motion.div
-                    className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left p-8 lg:p-16"
+                    className="w-full flex flex-col items-center text-center p-4" 
                     variants={containerVariants}
                     initial="hidden"
                     animate={show ? 'visible' : 'hidden'}
