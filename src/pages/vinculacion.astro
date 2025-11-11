@@ -1,0 +1,27 @@
+---
+
+import HeaderFlotante from '../components/vue/FloatHeader.vue';
+import MainLayout from '../layouts/MainLayout.astro';
+import Footer from '../components/vue/footer.vue';
+import VinculacionHero from '../components/vue/VinculacionHero.vue'; // Import agregado para el componente faltante
+// import EmpresasAliadasSlider from '../components/vue/EmpresasAliadasSlider.vue'; // Import agregado para el componente faltante
+---
+<MainLayout title="UTNay - Vinculación Empresarial">
+    <HeaderFlotante client:load />
+    <section id="vinculacion" class="h-screen relative">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <VinculacionHero client:load />
+    </section>
+    <div class="text-center bg-white py-20 px-4 ">
+        <h2 class="text-4xl font-bold text-gray-800 mb-2">
+            Empresas Aliadas
+        </h2>
+        <p class="text-gray-600 mb-8">
+            Conoce a nuestras empresas colaboradoras que impulsan el desarrollo profesional de nuestros estudiantes.
+        </p>
+        <div class="max-w-8xl mx-auto">
+            <!-- <EmpresasAliadasSlider client:load /> -->
+        </div>
+    </div>
+    <Footer client:only="vue" />
+</MainLayout>

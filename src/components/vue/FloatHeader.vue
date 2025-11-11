@@ -14,12 +14,36 @@
           <img src="/src/assets/images/utn.png" alt="UTNay" class="w-full h-full object-contain" >
         </div>
 
-        <!-- Links de escritorio -->
+        <!-- Links de escritorio con dropdowns -->
         <div class="hidden md:flex space-x-8">
-          <a href="#carreras" class="hover:text-green-200 transition-colors">Carreras</a>
-          <a href="#contacto" class="hover:text-green-200 transition-colors">Contacto</a>
-          <a href="#noticias" class="hover:text-green-200 transition-colors">Noticias</a>
-          <a href="#vinculacion" class="hover:text-green-200 transition-colors">Vinculación</a>
+          <div
+            v-for="(item, index) in menuItems"
+            :key="index"
+            class="relative group"
+            @mouseover="openDropdown(index)"
+            @mouseleave="closeDropdown(index)"
+          >
+            <button class="hover:text-green-200 transition-colors focus:outline-none">
+              {{ item.label }}
+              <svg v-if="item.subItems" class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <transition name="dropdown">
+              <ul
+                v-if="item.subItems"
+                v-show="activeDropdown === index"
+                class="absolute left-0 mt-2 w-56 bg-gray-900 rounded-md shadow-lg z-50"
+              >
+                <li v-for="(sub, subIndex) in item.subItems" :key="subIndex">
+                  <a :href="sub.href" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">
+                    {{ sub.label }}
+                  </a>
+                </li>
+              </ul>
+            </transition>
+          </div>
+          <!-- Becas como enlace directo -->
           <a href="https://www.utnay.edu.mx/becas.html" class="hover:text-green-200 transition-colors">Becas</a>
         </div>
 
@@ -33,14 +57,30 @@
         </button>
       </nav>
 
-      <!-- Menú móvil -->
-      <div v-show="isOpen" class="md:hidden mt-2 bg-gray-800/70 rounded-lg p-4 transition-all duration-300">
-        <a href="#carreras" class="block py-2 hover:text-green-200 transition-colors">Carreras</a>
-        <a href="#noticias" class="hover:text-green-200 transition-colors">Noticias</a>
-        <a href="#contacto" class="block py-2 hover:text-green-200 transition-colors">Contacto</a>
-        <a href="#vinculacion" class="block py-2 hover:text-green-200 transition-colors">Vinculación</a>
-        <a href="https://www.utnay.edu.mx/becas.html" target="_blank" rel="noopener noreferrer" class="block py-2 hover:text-green-200 transition-colors">Becas</a>
-      </div>
+      <!-- Menú móvil con acordeones y animaciones -->
+      <transition name="mobile-menu">
+        <div v-show="isOpen" class="md:hidden mt-2 bg-gray-800/70 rounded-lg p-4">
+          <div v-for="(item, index) in menuItems" :key="index" class="mb-2">
+            <button 
+              @click="toggleMobileSubmenu(index)" 
+              class="w-full text-left px-4 py-2 bg-gray-900 rounded-md hover:text-green-200 flex justify-between items-center"
+            >
+              {{ item.label }}
+              <svg :class="{ 'rotate-180': activeMobileSubmenu === index }" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <transition name="submenu">
+              <div v-show="activeMobileSubmenu === index" v-if="item.subItems" class="pl-6 pt-2 space-y-1">
+                <a v-for="(sub, subIndex) in item.subItems" :key="subIndex" :href="sub.href" class="block hover:text-green-200">
+                  {{ sub.label }}
+                </a>
+              </div>
+            </transition>
+          </div>
+          <a href="https://www.utnay.edu.mx/becas.html" target="_blank" rel="noopener noreferrer" class="block py-2 hover:text-green-200 transition-colors">Becas</a>
+        </div>
+      </transition>
     </div>
   </header>
 </template>
@@ -50,9 +90,58 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 const isScrolled = ref(false);
 const isOpen = ref(false);
+const activeDropdown = ref<number | null>(null);
+const activeMobileSubmenu = ref<number | null>(null);
+
+const menuItems = ref([
+  
+ {
+    label: 'Acerca de',
+    subItems: [
+      { label: 'Misión y Visión', href: '#mision' },
+      { label: 'Historia', href: '#historia' },
+    ]
+  },
+  {
+    label: 'Noticias',
+    subItems: [
+      { label: 'Feria de Empleo 2025', href: '#evento1' },
+      { label: 'Conferencia de IA', href: '#evento2' },
+    ]
+  },
+
+  {
+    label: 'Vinculación',
+    subItems: [
+      { label: 'Empresas aliadas', href: '/vinculacion' }, // ✅ Correcto
+      { label: 'Prácticas profesionales', href: '/vinculacion#practicas' }, // ⚠️ Mira la nota abajo
+    ]
+  },
+  {
+    label: 'Carreras',
+    subItems: [
+      { label: 'Ingeniería en Sistemas', href: '#ingenieria' },
+      { label: 'Ingeniería Industrial', href: '#industrial' },
+      { label: 'Lic. en Administración', href: '#administracion' },
+    ]
+  },
+  
+]);
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10;
+};
+
+const openDropdown = (index: number) => {
+  activeDropdown.value = index;
+};
+
+const closeDropdown = () => {
+  activeDropdown.value = null;
+};
+
+const toggleMobileSubmenu = (index: number) => {
+  activeMobileSubmenu.value = activeMobileSubmenu.value === index ? null : index;
 };
 
 onMounted(() => {
@@ -94,5 +183,48 @@ header.scrolled nav {
   backdrop-filter: blur(10px);
   border-radius: 24px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Animaciones para dropdowns de escritorio */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Animaciones para menú móvil principal */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Animaciones para submenús móviles */
+.submenu-enter-active,
+.submenu-leave-active {
+  transition: opacity 0.2s ease, height 0.2s ease;
+  overflow: hidden;
+}
+
+.submenu-enter-from,
+.submenu-leave-to {
+  opacity: 0;
+  height: 0;
+}
+
+.submenu-enter-to,
+.submenu-leave-from {
+  opacity: 1;
+  height: auto;
 }
 </style>
