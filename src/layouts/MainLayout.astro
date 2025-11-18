@@ -3,8 +3,7 @@
 import "../styles/global.css";
 
 import "../scripts/main.js";
-import HeaderFlotante from '../components/vue/FloatHeader.vue';
-import Footer from '../components/vue/footer.vue';
+import HeaderFlotante from "../components/vue/FloatHeader.vue";
 
 export interface Props {
     title: string;
@@ -12,23 +11,23 @@ export interface Props {
 const { title } = Astro.props;
 ---
 
-
-<!--ayuda dios no sé qué estoy haciendo --> 
-<!--Ulises: Kaleb te odio  -->
-<!-- bonita plantilla espero sea la ultima -->
-<!doctype html>
+<!--ayuda dios no sé qué estoy haciendo --><!--Ulises: Kaleb te odio  --><!-- bonita plantilla espero sea la ultima --><!doctype html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
     <body class="min-h-screen flex flex-col">
-    <header class="fixed top-0 left-0 w-full z-50">
-        <HeaderFlotante client:load />
-    </header>
+        <header class="fixed top-0 left-0 w-full z-50">
+            <HeaderFlotante client:load />
+        </header>
 
-    <main class="flex-grow mt-18 pb-20"> 
-        <slot />
-    </main>
-
-    <Footer client:only="vue" class="mt-auto" />
-
+        <main>
+            <slot />
+        </main>
     </body>
 </html>
 <style>
