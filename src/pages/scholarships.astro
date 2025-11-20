@@ -8,6 +8,7 @@ import { becasData } from "../DB/becas.js";
 
 import "../styles/global.css";
 import ScholarshipBanner from "../components/vue/ScholarshipBanner.vue";
+import ScholarshipsHero from "../components/vue/ScholarshipsHero.vue";
 
 const becasActivas = becasData.filter((b) => b.activa);
 ---
@@ -16,22 +17,10 @@ const becasActivas = becasData.filter((b) => b.activa);
     <div class="bg-white min-h-screen flex flex-col font-sans text-black-800">
         <HeaderFlotante client:load />
 
-        <div
-            class="text-center bg-black h-[420px] md:h-[560px] lg:h-[700px] px-4 border-b border-gray-200 -mt-16 text-white flex flex-col justify-end pt-6 pb-12 md:pt-8 md:pb-16 lg:pt-12 lg:pb-24"
-        >
-            <h2
-                class="text-4xl md:text-6xl font-extrabold py-2 mb-4 drop-shadow-sm bg-gradient-to-r from-green-600 to-cyan-600 bg-clip-text text-transparent"
-            >
-                Becas Institucionales
-            </h2>
-
-            <p class="text-xl md:text-2xl text-green-200 leading-relaxed">
-                Reconocemos tu esfuerzo académico y talento deportivo. Consulta
-                las convocatorias vigentes para el periodo <span
-                    class="font-bold text-gray-200">Enero-Abril 2026</span
-                >.
-            </p>
-        </div>
+        <section id="scholarships-hero" class="relative h-[80vh] md:h-[90vh]">
+            <div class="absolute inset-0 bg-black/50 z-10"></div>
+            <ScholarshipsHero client:load />
+        </section>
 
         <section
             id="becas"
