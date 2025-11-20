@@ -4,11 +4,10 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Hero from "../components/vue/Hero.vue";
 import CareerBanner from "../components/vue/CareerBanner.vue";
 import NoticiasSlider from "../components/vue/noticiasslider.vue";
-import HeaderFlotante from "../components/vue/FloatHeader.vue";
 import Footer from "../components/vue/footer.vue";
 import type { ImageMetadata } from "astro";
 import { careers } from "../DB/db.js";
-import connectDB from "../DB/conect.js";
+// import connectDB from "../DB/conect.js";
 
 import "../styles/global.css";
 
@@ -21,13 +20,13 @@ interface Career {
 }
 
 // Conecta a la base de datos en el servidor antes de usar datos que la requieran.
-await connectDB();
+// await connectDB(); // Deshabilitado en la home para evitar fallos si la BD no está disponible
 ---
 
 <MainLayout title="UTNay - Universidad Tecnológica de Nayarit">
     <section id="inicio" class="h-screen relative">
         <div class="absolute inset-0 bg-black/50"></div>
-        <Hero client:only="vue" />
+        <Hero client:load />
     </section>
     <div class="text-center bg-white py-20 px-4">
         <h2 class="text-4xl font-bold text-gray-800 mb-2">
