@@ -32,27 +32,21 @@ maldito insecto ya me tienes harto
           </div>
 
           <div class="relative group">
-            <button class="hover:text-green-200 transition-colors focus:outline-none">
+            <a href="/contacto" class="hover:text-green-200 transition-colors focus:outline-none">
               Contacto
               <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-            </button>
-            
-            
+            </a>
           </div>
 
           <div class="relative group">
-            <button class="hover:text-green-200 transition-colors focus:outline-none">
-              Noticias
+            <a href="/admisiones" class="hover:text-green-200 transition-colors focus:outline-none">
+              Admisiones
               <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-            </button>
-            <ul class="absolute left-0 mt-2 w-56 bg-gray-900 rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-              <li><a href="/#noticias" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">Feria de Empleo 2025</a></li>
-              <li><a href="/#noticias" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">Conferencia de IA</a></li>
-            </ul>
+            </a>
           </div>
 
           <div class="relative group">
@@ -64,7 +58,7 @@ maldito insecto ya me tienes harto
             </button>
             <ul class="absolute left-0 mt-2 w-56 bg-gray-900 rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
               <li><a href="/vinculacion#empresas" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">Empresas aliadas</a></li>
-              <li><a href="/vinculacion#bolsa" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">Prácticas profesionales</a></li>
+              <li><a href="/practicas-profesionales" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200">Prácticas profesionales</a></li>
             </ul>
           </div>
 
@@ -143,10 +137,9 @@ const menuItems = ref([
     ]
   },
   {
-    label: 'Noticias',
+    label: 'Admisiones',
     subItems: [
-      { label: 'Feria de Empleo 2025', href: '/#noticias' },
-      { label: 'Conferencia de IA', href: '/#noticias' },
+      { label: 'Información general', href: '/admisiones' },
     ]
   },
   {
@@ -162,8 +155,8 @@ const menuItems = ref([
   {
     label: 'Vinculación',
     subItems: [
-      { label: 'Empresas aliadas', href: '/vinculacion#empresas' }, // ✅ Correcto
-      { label: 'Prácticas profesionales', href: '/vinculacion#bolsa' }, // ⚠️ Mira la nota abajo
+      { label: 'Empresas aliadas', href: '/vinculacion#empresas' },
+      { label: 'Prácticas profesionales', href: '/practicas-profesionales' },
     ]
   },
   {

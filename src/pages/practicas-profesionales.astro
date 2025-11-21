@@ -1,0 +1,48 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Footer from "../components/vue/footer.vue";
+import "../styles/global.css";
+---
+
+<MainLayout title="Prácticas Profesionales - Universidad Tecnológica de Nayarit">
+  <section class="relative h-[80vh] md:h-[90vh] flex items-center justify-center bg-gradient-to-br from-slate-950 via-emerald-900 to-slate-800 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top,_#22c55e_0,_transparent_55%),_radial-gradient(circle_at_bottom,_#0f766e_0,_transparent_55%)]"></div>
+    <div class="relative z-10 max-w-4xl px-6 text-center">
+      <p class="uppercase tracking-[0.2em] text-emerald-200 text-xs md:text-sm mb-3">Vinculación y experiencia</p>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+        Prácticas Profesionales UTNay
+      </h1>
+      <p class="text-sm md:text-base text-emerald-50/90 max-w-2xl mx-auto">
+        Integra tu formación académica con la experiencia real en empresas y organizaciones aliadas.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white text-gray-900">
+    <div class="max-w-6xl mx-auto grid gap-10 md:grid-cols-[1.7fr,1.3fr] items-start">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Proceso general</h2>
+        <ol class="space-y-4 text-sm md:text-base text-gray-700 list-decimal list-inside">
+          <li>Consulta con tu coordinación de carrera el periodo en el que puedes realizar tus prácticas.</li>
+          <li>Elige, con apoyo de Vinculación, una empresa o institución registrada en la bolsa de convenios.</li>
+          <li>Entrega la documentación solicitada (carta de presentación, programa de actividades, etc.).</li>
+          <li>Cumple con las horas y actividades establecidas en tu plan de prácticas.</li>
+          <li>Entrega tus reportes y evaluaciones finales según los lineamientos de la UTNay.</li>
+        </ol>
+      </div>
+
+      <aside class="space-y-4 text-xs md:text-sm text-gray-700">
+        <div class="rounded-3xl border border-gray-100 bg-gray-50 p-5 shadow-sm">
+          <h3 class="font-semibold mb-2">Coordinación de Vinculación</h3>
+          <p>Indica aquí los datos de contacto o enlaces a formularios oficiales para registro de prácticas.</p>
+        </div>
+        <div class="rounded-3xl border border-emerald-100 bg-emerald-50/70 p-5 shadow-sm">
+          <h3 class="font-semibold mb-2">Recomendación</h3>
+          <p>Invita a los estudiantes a revisar con anticipación los requisitos y tiempos para evitar retrasos en su titulación.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <Footer client:only="vue" />
+</MainLayout>
