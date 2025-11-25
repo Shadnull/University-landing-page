@@ -69,6 +69,7 @@ maldito insecto ya me tienes harto
           </div>
 
           <a href="/scholarships" class="hover:text-green-200 transition-colors">Becas</a>
+          <a v-if="!isLoggedIn" href="/Auth/register" class="hover:text-green-200 transition-colors font-semibold border border-green-200 px-4 py-1 rounded-full hover:bg-green-200 hover:text-green-900">Registro</a>
         </div>
 
         <!-- Botón hamburguesa móvil -->
@@ -103,6 +104,7 @@ maldito insecto ya me tienes harto
             </transition>
           </div>
           <a href="https://www.utnay.edu.mx/becas.html" target="_blank" rel="noopener noreferrer" class="block py-2 hover:text-green-200 transition-colors">Becas</a>
+          <a v-if="!isLoggedIn" href="/Auth/register" class="block py-2 hover:text-green-200 transition-colors font-semibold">Registro</a>
         </div>
       </transition>
     </div>
@@ -116,6 +118,7 @@ const isScrolled = ref(false);
 const isOpen = ref(false);
 const activeDropdown = ref<number | null>(null);
 const activeMobileSubmenu = ref<number | null>(null);
+const isLoggedIn = ref(false);
 
 const menuItems = ref([
   
@@ -178,6 +181,10 @@ const toggleMobileSubmenu = (index: number) => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
+  // Check login status
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('admin_auth')) {
+    isLoggedIn.value = true;
+  }
 });
 
 onUnmounted(() => {

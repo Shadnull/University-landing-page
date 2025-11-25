@@ -32,19 +32,23 @@ async function connectDB() {
     }
 
     try {
-        console.log('Conectando a MongoDB...');
-        
+        console.log('Intentando conectar a MongoDB...');
+        console.log('URI:', MONGODB_URI.replace(/:([^:@]+)@/, ':****@')); // Log URI masking password
+
         // Cachear la promesa de conexión
         cachedConnection = mongoose.connect(MONGODB_URI, {
             dbName: 'ulps', // Nombre de tu base de datos
+            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
         });
 
         await cachedConnection;
         console.log('Conectado exitosamente a MongoDB');
-        
+
         return mongoose;
     } catch (err) {
-        console.error('Error al conectar a MongoDB:', err.message);
+        console.error('Error CRÍTICO al conectar a MongoDB:', err);
+        console.error('Mensaje de error:', err.message);
+        if (err.cause) console.error('Causa:', err.cause);
         cachedConnection = null; // Limpiar caché en caso de error
         throw err;
     }

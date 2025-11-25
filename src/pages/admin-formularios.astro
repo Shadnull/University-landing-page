@@ -7,10 +7,12 @@ import "../styles/global.css";
 <MainLayout title="Panel de formularios - UTNay">
   <section class="pt-28 pb-10 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
     <div class="max-w-6xl mx-auto">
-      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Panel de formularios</h1>
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">
+        Panel de formularios
+      </h1>
       <p class="text-sm md:text-base text-emerald-100/90 max-w-2xl">
-        Revisión rápida de envíos de los formularios de Contáctanos, Servicios Generales,
-        Servicios Informáticos y Buzón de Quejas y Sugerencias.
+        Revisión rápida de envíos de los formularios de Contáctanos, Servicios
+        Generales, Servicios Informáticos y Buzón de Quejas y Sugerencias.
       </p>
     </div>
   </section>
@@ -22,7 +24,9 @@ import "../styles/global.css";
         <p class="text-xs md:text-sm text-gray-600">
           Últimos mensajes recibidos desde el formulario de contacto.
         </p>
-        <div class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50">
+        <div
+          class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50"
+        >
           <table class="min-w-full text-xs md:text-sm">
             <thead class="bg-gray-100 text-gray-700">
               <tr>
@@ -34,7 +38,9 @@ import "../styles/global.css";
                 <th class="px-3 py-2 text-left font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody id="admin-contacto-body" class="divide-y divide-gray-100 bg-white"></tbody>
+            <tbody
+              id="admin-contacto-body"
+              class="divide-y divide-gray-100 bg-white"></tbody>
           </table>
         </div>
       </div>
@@ -42,9 +48,12 @@ import "../styles/global.css";
       <div class="space-y-3">
         <h2 class="text-xl md:text-2xl font-bold">Servicios Generales</h2>
         <p class="text-xs md:text-sm text-gray-600">
-          Reportes de incidencias relacionados con infraestructura, mantenimiento y limpieza.
+          Reportes de incidencias relacionados con infraestructura,
+          mantenimiento y limpieza.
         </p>
-        <div class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50">
+        <div
+          class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50"
+        >
           <table class="min-w-full text-xs md:text-sm">
             <thead class="bg-gray-100 text-gray-700">
               <tr>
@@ -57,7 +66,8 @@ import "../styles/global.css";
                 <th class="px-3 py-2 text-left font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody id="admin-sg-body" class="divide-y divide-gray-100 bg-white"></tbody>
+            <tbody id="admin-sg-body" class="divide-y divide-gray-100 bg-white"
+            ></tbody>
           </table>
         </div>
       </div>
@@ -65,9 +75,12 @@ import "../styles/global.css";
       <div class="space-y-3">
         <h2 class="text-xl md:text-2xl font-bold">Servicios Informáticos</h2>
         <p class="text-xs md:text-sm text-gray-600">
-          Tickets de soporte técnico levantados desde el formulario de servicios informáticos.
+          Tickets de soporte técnico levantados desde el formulario de servicios
+          informáticos.
         </p>
-        <div class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50">
+        <div
+          class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50"
+        >
           <table class="min-w-full text-xs md:text-sm">
             <thead class="bg-gray-100 text-gray-700">
               <tr>
@@ -80,7 +93,8 @@ import "../styles/global.css";
                 <th class="px-3 py-2 text-left font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody id="admin-si-body" class="divide-y divide-gray-100 bg-white"></tbody>
+            <tbody id="admin-si-body" class="divide-y divide-gray-100 bg-white"
+            ></tbody>
           </table>
         </div>
       </div>
@@ -88,9 +102,12 @@ import "../styles/global.css";
       <div class="space-y-3">
         <h2 class="text-xl md:text-2xl font-bold">Quejas y Sugerencias</h2>
         <p class="text-xs md:text-sm text-gray-600">
-          Mensajes recibidos en el buzón de quejas, sugerencias y reconocimientos.
+          Mensajes recibidos en el buzón de quejas, sugerencias y
+          reconocimientos.
         </p>
-        <div class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50">
+        <div
+          class="overflow-x-auto rounded-2xl border border-gray-100 bg-gray-50"
+        >
           <table class="min-w-full text-xs md:text-sm">
             <thead class="bg-gray-100 text-gray-700">
               <tr>
@@ -98,13 +115,16 @@ import "../styles/global.css";
                 <th class="px-3 py-2 text-left font-semibold">Rol</th>
                 <th class="px-3 py-2 text-left font-semibold">Tipo</th>
                 <th class="px-3 py-2 text-left font-semibold">Área</th>
-                <th class="px-3 py-2 text-left font-semibold">Desea respuesta</th>
+                <th class="px-3 py-2 text-left font-semibold"
+                  >Desea respuesta</th
+                >
                 <th class="px-3 py-2 text-left font-semibold">Estado</th>
                 <th class="px-3 py-2 text-left font-semibold">Fecha</th>
                 <th class="px-3 py-2 text-left font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody id="admin-qs-body" class="divide-y divide-gray-100 bg-white"></tbody>
+            <tbody id="admin-qs-body" class="divide-y divide-gray-100 bg-white"
+            ></tbody>
           </table>
         </div>
       </div>
@@ -115,6 +135,13 @@ import "../styles/global.css";
 </MainLayout>
 
 <script is:inline>
+  // Protección básica de ruta
+  if (typeof localStorage !== "undefined") {
+    if (!localStorage.getItem("admin_auth")) {
+      window.location.href = "/Auth/login";
+    }
+  }
+
   const fmtFecha = (iso) => {
     if (!iso) return "";
     try {
@@ -204,7 +231,9 @@ import "../styles/global.css";
 
         const accionesTd = document.createElement("td");
         accionesTd.className = "px-3 py-2 align-top";
-        accionesTd.appendChild(createActionButtons("/api/contacto", item._id, statusCell));
+        accionesTd.appendChild(
+          createActionButtons("/api/contacto", item._id, statusCell),
+        );
         tr.appendChild(accionesTd);
       },
     });
@@ -234,7 +263,7 @@ import "../styles/global.css";
         const accionesTd = document.createElement("td");
         accionesTd.className = "px-3 py-2 align-top";
         accionesTd.appendChild(
-          createActionButtons("/api/servicios-generales", item._id, statusCell)
+          createActionButtons("/api/servicios-generales", item._id, statusCell),
         );
         tr.appendChild(accionesTd);
       },
@@ -265,7 +294,11 @@ import "../styles/global.css";
         const accionesTd = document.createElement("td");
         accionesTd.className = "px-3 py-2 align-top";
         accionesTd.appendChild(
-          createActionButtons("/api/servicios-informaticos", item._id, statusCell)
+          createActionButtons(
+            "/api/servicios-informaticos",
+            item._id,
+            statusCell,
+          ),
         );
         tr.appendChild(accionesTd);
       },
@@ -299,7 +332,7 @@ import "../styles/global.css";
         const accionesTd = document.createElement("td");
         accionesTd.className = "px-3 py-2 align-top";
         accionesTd.appendChild(
-          createActionButtons("/api/quejas-sugerencias", item._id, statusCell)
+          createActionButtons("/api/quejas-sugerencias", item._id, statusCell),
         );
         tr.appendChild(accionesTd);
       },

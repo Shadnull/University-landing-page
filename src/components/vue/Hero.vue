@@ -3,8 +3,8 @@
 
     <!-- Fondo -->
     <img
-      class="absolute inset-0 w-full h-full object-cover z-0"
-      :src="heroBg.src"
+      class="absolute inset-0 w-full h-full object-cover z-0 blur-sm"
+      src="https://www.utdelacosta.edu.mx/assets/img/universidad.webp"
       alt="Fondo de la universidad"
     />
     <div class="absolute inset-0 bg-black/60 z-10" />
@@ -14,7 +14,7 @@
       <!-- Imagen izquierda (slide up) -->
       <div
         :class="[
-          'absolute bottom-0 left-0 z-20 w-auto h-auto max-w-[35%] md:max-w-[40%] lg:max-w-[45%]',
+          'absolute bottom-0 left-0 z-20 w-auto h-auto max-w-[25%] md:max-w-[30%] lg:max-w-[35%]',
           'transform transition-transform transition-opacity duration-700 ease-out',
           isReady ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
         ]"
@@ -64,7 +64,7 @@
       <!-- Imagen derecha (slide up) -->
       <div
         :class="[
-          'absolute bottom-0 right-0 z-20 w-auto h-auto max-w-[40%] md:max-w-[45%] lg:max-w-[50%]',
+          'absolute -bottom-20 right-0 z-20 w-auto h-auto max-w-[40%] md:max-w-[45%] lg:max-w-[50%]',
           'transform transition-transform transition-opacity duration-700 ease-out',
           isReady ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
         ]"
@@ -83,8 +83,8 @@
 <script setup>
 // Usa imágenes locales pero mantiene el mismo layout y roles visuales
 import heroBg from "../../assets/images/random/panoramic.jpg";
-import leftImage from "../../assets/images/images(1).jpg";
-import rightImage from "../../assets/images/asd.png";
+import leftImage from "../../assets/images/l.png";
+import rightImage from "../../assets/images/c.png";
 import { ref, onMounted, nextTick } from 'vue';
 
 const isReady = ref(false);

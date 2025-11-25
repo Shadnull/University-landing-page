@@ -1,0 +1,172 @@
+---
+import LayoutBase from "../../layouts/MainLayout.astro";
+---
+
+<LayoutBase title="Registro - UTNay">
+    <div
+        class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
+    >
+        <div
+            class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl"
+        >
+            <div>
+                <h2
+                    class="mt-6 text-center text-3xl font-extrabold text-gray-900"
+                >
+                    Crear Cuenta
+                </h2>
+                <p class="mt-2 text-center text-sm text-gray-600">
+                    Regístrate para acceder al panel
+                </p>
+            </div>
+            <form class="mt-8 space-y-6" id="registerForm">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="username" class="sr-only">Usuario</label>
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="Usuario"
+                        />
+                    </div>
+                    <div>
+                        <label for="email" class="sr-only"
+                            >Correo Electrónico</label
+                        >
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="Correo Electrónico"
+                        />
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Contraseña</label>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="Contraseña"
+                        />
+                    </div>
+                    <div>
+                        <label for="confirm-password" class="sr-only"
+                            >Confirmar Contraseña</label
+                        >
+                        <input
+                            id="confirm-password"
+                            name="confirm-password"
+                            type="password"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="Confirmar Contraseña"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200"
+                    >
+                        Registrarse
+                    </button>
+                </div>
+            </form>
+            <div
+                id="success-msg"
+                class="text-emerald-600 text-center text-sm hidden"
+            >
+                ¡Registro exitoso! Redirigiendo al login...
+            </div>
+            <div id="error-msg" class="text-red-500 text-center text-sm hidden">
+                Las contraseñas no coinciden.
+            </div>
+            <div class="text-center mt-4">
+                <a
+                    href="/Auth/login"
+                    class="text-sm text-emerald-600 hover:text-emerald-500"
+                >
+                    ¿Ya tienes cuenta? Inicia sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</LayoutBase>
+
+<script>
+    const form = document.getElementById("registerForm");
+    const successMsg = document.getElementById("success-msg");
+    const errorMsg = document.getElementById("error-msg");
+
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target as HTMLFormElement);
+            const username = formData.get("username");
+            const email = formData.get("email");
+            const password = formData.get("password");
+            const confirmPassword = formData.get("confirm-password");
+
+            // Reset messages
+            if (errorMsg) errorMsg.classList.add("hidden");
+            if (successMsg) successMsg.classList.add("hidden");
+
+            if (password !== confirmPassword) {
+                if (errorMsg) {
+                    errorMsg.textContent = "Las contraseñas no coinciden.";
+                    errorMsg.classList.remove("hidden");
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        confirmPassword,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (successMsg) {
+                        successMsg.textContent =
+                            "¡Registro exitoso! Redirigiendo al login...";
+                        successMsg.classList.remove("hidden");
+                    }
+                    setTimeout(() => {
+                        window.location.href = "/Auth/login";
+                    }, 1500);
+                } else {
+                    if (errorMsg) {
+                        errorMsg.textContent =
+                            data.message || "Error al registrarse.";
+                        errorMsg.classList.remove("hidden");
+                    }
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                if (errorMsg) {
+                    errorMsg.textContent =
+                        "Error de conexión. Inténtalo más tarde.";
+                    errorMsg.classList.remove("hidden");
+                }
+            }
+        });
+    }
+</script>

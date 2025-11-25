@@ -75,6 +75,9 @@
             <li>
               <a href="/psicologia" class="hover:text-white transition-colors hover:underline">Servicio de psicología</a>
             </li>
+            <li>
+              <a href="/Auth/login" class="hover:text-white transition-colors hover:underline">Acceso Administrativo</a>
+            </li>
           </ul>
         </div>
       </div>
