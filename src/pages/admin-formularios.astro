@@ -2,6 +2,15 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import Footer from "../components/vue/footer.vue";
 import "../styles/global.css";
+
+const cookieHeader = Astro.request.headers.get('cookie') || '';
+const isAdmin = cookieHeader.includes('admin=1');
+if (!isAdmin) {
+  return new Response(null, {
+    status: 302,
+    headers: { Location: '/Login/login' },
+  });
+}
 ---
 
 <MainLayout title="Panel de formularios - UTNay">
