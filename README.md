@@ -36,11 +36,44 @@ A modern, responsive landing page for the university website.
 
 ```
 src/
-├── components/    # Reusable components
-├── layouts/      # Page layouts
-├── pages/        # Page components
-└── styles/       # Global styles
+├── components/       # Reusable components
+│   └── vue/         # Vue components
+│       └── AlumnosCRUD.vue  # CRUD interface for students
+├── layouts/         # Page layouts
+│   └── UniversityLayout.astro  # Main layout for university pages
+├── pages/           # Page components
+│   ├── university.astro  # Main university page
+│   └── api/        # API endpoints
+│       └── alumnos.ts  # Students API endpoints
+└── models/         # Data models
+    └── Alumno.ts  # Student data model
 ```
+
+## 🎓 CRUD Functionality
+
+The application includes a complete CRUD (Create, Read, Update, Delete) interface for managing student records.
+
+### Accessing the CRUD Interface
+1. Start the development server:
+   ```bash
+   npm run dev
+   ```
+2. Open your browser and navigate to:
+   ```
+   http://localhost:4321/university
+   ```
+
+### Features
+- **View Students**: See a list of all registered students with their details
+- **Add New Student**: Use the form to add a new student record
+- **Update Student**: Click the edit button to modify student information
+- **Delete Student**: Remove a student record with the delete button
+
+### API Endpoints
+- `GET /api/alumnos` - Get all students
+- `POST /api/alumnos` - Create a new student
+- `PUT /api/alumnos/:id` - Update a student
+- `DELETE /api/alumnos/:id` - Delete a student
 
 ## 📝 Commit & Push Changes
 
