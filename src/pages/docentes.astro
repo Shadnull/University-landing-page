@@ -1,0 +1,33 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import DocentesCRUD from "../components/vue/DocentesCRUD.vue";
+import PageHeroTemplate from "../components/vue/PageHeroTemplate.vue";
+import "../styles/global.css";
+
+const heroContent = {
+    title: "Claustro Docente",
+    subtitle:
+        "Consulta y administra la información del cuerpo académico de la UTNay",
+    bgImage: "/images/docentes-hero.jpg",
+};
+---
+
+<MainLayout title="Claustro Docente - Universidad Tecnológica de Nayarit">
+    <section class="relative h-[60vh] md:h-[70vh]">
+        <div class="absolute inset-0 bg-black/50 z-10"></div>
+        <PageHeroTemplate
+            client:load
+            eyebrow="Claustro Docente"
+            title={heroContent.title}
+            subtitle={heroContent.subtitle}
+            imageSrc={heroContent.bgImage}
+            gradientClass="bg-gradient-to-br from-[#002b15] to-black"
+        />
+    </section>
+
+    <main class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <DocentesCRUD client:load />
+        </div>
+    </main>
+</MainLayout>

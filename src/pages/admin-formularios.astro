@@ -1,6 +1,8 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import Footer from "../components/vue/footer.vue";
+import Footer from "../components/vue/Footer.vue";
+import AlumnosCRUD from "../components/vue/AlumnosCRUD.vue";
+import DocentesCRUD from "../components/vue/DocentesCRUD.vue";
 import "../styles/global.css";
 ---
 
@@ -19,6 +21,16 @@ import "../styles/global.css";
 
   <section class="py-10 px-4 sm:px-6 lg:px-8 bg-white text-gray-900">
     <div class="max-w-6xl mx-auto space-y-10">
+      <div class="grid gap-6 md:grid-cols-2">
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold mb-3">Alumnos - Gestión</h2>
+          <AlumnosCRUD client:load />
+        </div>
+        <div>
+          <h2 class="text-xl md:text-2xl font-bold mb-3">Docentes - Gestión</h2>
+          <DocentesCRUD client:load />
+        </div>
+      </div>
       <div class="space-y-3">
         <h2 class="text-xl md:text-2xl font-bold">Contáctanos</h2>
         <p class="text-xs md:text-sm text-gray-600">

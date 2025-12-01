@@ -1,0 +1,42 @@
+---
+// src/pages/alumnos.astro
+import MainLayout from "../layouts/MainLayout.astro";
+import AlumnosCRUD from "../components/vue/AlumnosCRUD.vue";
+import PageHeroTemplate from "../components/vue/PageHeroTemplate.vue";
+
+// Hero content configuration
+const heroContent = {
+    title: "Gestión Escolar",
+    subtitle: "Administra los registros de los estudiantes de la universidad",
+    bgImage: "/images/admin-hero.jpg", // Ensure this image exists or use a placeholder
+};
+---
+
+<MainLayout title="Gestión Escolar - UTNay">
+    <div
+        class="relative h-[60vh] md:h-[70vh] w-full overflow-hidden bg-gray-900"
+    >
+        <div class="absolute inset-0 bg-black/50 z-0"></div>
+
+        <PageHeroTemplate
+            client:load
+            title={heroContent.title}
+            subtitle={heroContent.subtitle}
+            imageSrc={heroContent.bgImage}
+            gradientClass="bg-gradient-to-br from-green-900 via-green-800 to-gray-900"
+        />
+    </div>
+
+    <main class="py-12 bg-gray-50 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AlumnosCRUD client:load />
+        </div>
+    </main>
+</MainLayout>
+
+<style>
+    /* Ensure smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
