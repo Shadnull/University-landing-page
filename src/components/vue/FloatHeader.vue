@@ -69,7 +69,50 @@ maldito insecto ya me tienes harto
           </div>
 
           <a href="/scholarships" class="hover:text-green-200 transition-colors">Becas</a>
-          <a v-if="!isLoggedIn" href="/Auth/register" class="hover:text-green-200 transition-colors font-semibold border border-green-200 px-4 py-1 rounded-full hover:bg-green-200 hover:text-green-900">Registro</a>
+
+          <!-- User Profile / Register (escritorio) -->
+          <div v-if="isLoggedIn" class="relative group">
+            <button class="flex items-center space-x-2 hover:text-green-200 transition-colors focus:outline-none">
+              <img
+                :src="user?.profile_picture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+                alt="Perfil"
+                class="w-8 h-8 rounded-full object-cover border-2 border-green-200"
+              />
+              <span class="font-medium">{{ user?.username }}</span>
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <ul class="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              <li>
+                <a href="/profile" class="block px-4 py-2 hover:bg-gray-800 hover:text-green-200 flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Mi Perfil
+                </a>
+              </li>
+              <li>
+                <button
+                  @click="logout"
+                  class="w-full text-left block px-4 py-2 hover:bg-gray-800 hover:text-red-400 flex items-center"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Cerrar Sesión
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <a
+            v-else
+            href="/Auth/register"
+            class="hover:text-green-200 transition-colors font-semibold border border-green-200 px-4 py-1 rounded-full hover:bg-green-200 hover:text-green-900"
+          >
+            Registro
+          </a>
         </div>
 
         <!-- Botón hamburguesa móvil -->
@@ -104,7 +147,36 @@ maldito insecto ya me tienes harto
             </transition>
           </div>
           <a href="https://www.utnay.edu.mx/becas.html" target="_blank" rel="noopener noreferrer" class="block py-2 hover:text-green-200 transition-colors">Becas</a>
-          <a v-if="!isLoggedIn" href="/Auth/register" class="block py-2 hover:text-green-200 transition-colors font-semibold">Registro</a>
+
+          <!-- Perfil / Registro (móvil) -->
+          <div v-if="isLoggedIn" class="border-t border-gray-700 mt-2 pt-2">
+            <div class="flex items-center space-x-3 px-2 py-2 mb-2">
+              <img
+                :src="user?.profile_picture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+                alt="Perfil"
+                class="w-10 h-10 rounded-full object-cover border-2 border-green-200"
+              />
+              <div>
+                <p class="font-medium text-white">{{ user?.username }}</p>
+                <p class="text-xs text-gray-400">{{ user?.email }}</p>
+              </div>
+            </div>
+            <a href="/profile" class="block py-2 px-2 hover:text-green-200 transition-colors">Mi Perfil</a>
+            <button
+              @click="logout"
+              class="w-full text-left block py-2 px-2 text-red-400 hover:text-red-300 transition-colors"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+
+          <a
+            v-else
+            href="/Auth/register"
+            class="block py-2 hover:text-green-200 transition-colors font-semibold"
+          >
+            Registro
+          </a>
         </div>
       </transition>
     </div>
@@ -119,6 +191,7 @@ const isOpen = ref(false);
 const activeDropdown = ref<number | null>(null);
 const activeMobileSubmenu = ref<number | null>(null);
 const isLoggedIn = ref(false);
+const user = ref<any | null>(null);
 
 const menuItems = ref([
   
@@ -164,6 +237,7 @@ const menuItems = ref([
 ]);
 
 const handleScroll = () => {
+  if (typeof window === 'undefined') return;
   isScrolled.value = window.scrollY > 10;
 };
 
@@ -179,15 +253,49 @@ const toggleMobileSubmenu = (index: number) => {
   activeMobileSubmenu.value = activeMobileSubmenu.value === index ? null : index;
 };
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  // Check login status
-  if (typeof localStorage !== 'undefined' && localStorage.getItem('admin_auth')) {
-    isLoggedIn.value = true;
+const loadUserFromLocalStorage = () => {
+  if (typeof window === 'undefined') return;
+
+  const auth = window.localStorage.getItem('admin_auth');
+  const storedUser = window.localStorage.getItem('user_info');
+
+  if (auth && storedUser) {
+    try {
+      user.value = JSON.parse(storedUser);
+      isLoggedIn.value = true;
+    } catch (error) {
+      console.error('Error al leer user_info desde localStorage', error);
+      window.localStorage.removeItem('user_info');
+      isLoggedIn.value = false;
+      user.value = null;
+    }
+  } else {
+    isLoggedIn.value = false;
+    user.value = null;
   }
+};
+
+const logout = () => {
+  if (typeof window === 'undefined') return;
+
+  window.localStorage.removeItem('admin_auth');
+  window.localStorage.removeItem('user_info');
+  isLoggedIn.value = false;
+  user.value = null;
+
+  window.location.href = '/Auth/login';
+};
+
+onMounted(() => {
+  if (typeof window === 'undefined') return;
+
+  window.addEventListener('scroll', handleScroll);
+  handleScroll();
+  loadUserFromLocalStorage();
 });
 
 onUnmounted(() => {
+  if (typeof window === 'undefined') return;
   window.removeEventListener('scroll', handleScroll);
 });
 </script>
