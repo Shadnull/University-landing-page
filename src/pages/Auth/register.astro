@@ -41,8 +41,28 @@ import LayoutBase from "../../layouts/MainLayout.astro";
                             name="email"
                             type="email"
                             required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
                             placeholder="Correo Electrónico"
+                        />
+                    </div>
+                    <div>
+                        <label for="phone" class="sr-only">Teléfono</label>
+                        <input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="Teléfono (Opcional)"
+                        />
+                    </div>
+                    <div>
+                        <label for="profile_picture" class="sr-only">URL Foto de Perfil</label>
+                        <input
+                            id="profile_picture"
+                            name="profile_picture"
+                            type="url"
+                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                            placeholder="URL Foto de Perfil (Opcional)"
                         />
                     </div>
                     <div>
@@ -112,6 +132,8 @@ import LayoutBase from "../../layouts/MainLayout.astro";
             const formData = new FormData(e.target as HTMLFormElement);
             const username = formData.get("username");
             const email = formData.get("email");
+            const phone = formData.get("phone");
+            const profile_picture = formData.get("profile_picture");
             const password = formData.get("password");
             const confirmPassword = formData.get("confirm-password");
 
@@ -136,6 +158,8 @@ import LayoutBase from "../../layouts/MainLayout.astro";
                     body: JSON.stringify({
                         username,
                         email,
+                        phone,
+                        profile_picture,
                         password,
                         confirmPassword,
                     }),

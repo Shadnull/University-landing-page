@@ -21,6 +21,16 @@ const userSchema = new mongoose.Schema({
         required: [true, 'La contraseña es requerida'],
         minlength: [6, 'La contraseña debe tener al menos 6 caracteres']
     },
+    phone: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    profile_picture: {
+        type: String,
+        trim: true,
+        default: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' // Default avatar
+    },
     createdAt: {
         type: Date,
         default: Date.now

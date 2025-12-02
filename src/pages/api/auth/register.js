@@ -8,7 +8,7 @@ export const POST = async ({ request }) => {
         await connectDB();
 
         const data = await request.json();
-        const { username, email, password, confirmPassword } = data;
+        const { username, email, password, confirmPassword, phone, profile_picture } = data;
 
         // Validaciones básicas
         if (!username || !email || !password || !confirmPassword) {
@@ -47,6 +47,8 @@ export const POST = async ({ request }) => {
             username,
             email,
             password, // TODO: Hash password
+            phone: phone || '',
+            profile_picture: profile_picture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
         });
 
         await newUser.save();

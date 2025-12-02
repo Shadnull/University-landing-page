@@ -121,7 +121,8 @@ import LayoutBase from "../../layouts/MainLayout.astro";
                         "user_info",
                         JSON.stringify(data.user),
                     );
-                    window.location.href = "/admin-formularios";
+                    // Redirigir al perfil del usuario
+                    window.location.href = "/profile";
                 } else {
                     if (errorMsg) {
                         errorMsg.textContent =

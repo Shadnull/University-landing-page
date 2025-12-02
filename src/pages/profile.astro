@@ -1,0 +1,278 @@
+---
+import LayoutBase from "../layouts/MainLayout.astro";
+import connectDB from "../DB/conect";
+import Grade from "../DB/models/Grade";
+import User from "../DB/models/User";
+
+// Proteger la ruta en el servidor (opcional, ya que también validamos en cliente)
+// Nota: Astro estático no tiene sesión persistente en servidor sin adaptadores,
+// así que dependemos mucho del cliente o de cookies si las hubiera.
+// Para este demo, renderizamos la estructura y el cliente rellena los datos.
+---
+
+<LayoutBase title="Mi Perfil - UTNay">
+    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 pt-24">
+        <div class="max-w-4xl mx-auto">
+            <!-- Perfil Header -->
+            <div class="bg-white shadow rounded-lg overflow-hidden mb-6">
+                <div class="bg-emerald-600 h-32"></div>
+                <div class="px-4 py-5 sm:px-6 relative">
+                    <div
+                        class="-mt-16 mb-4 flex justify-center sm:justify-start"
+                    >
+                        <img
+                            id="profile-image"
+                            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                            alt="Profile"
+                            class="h-32 w-32 rounded-full border-4 border-white bg-white object-cover shadow-lg"
+                        />
+                    </div>
+
+                    <div class="text-center sm:text-left">
+                        <h3
+                            class="text-2xl leading-6 font-bold text-gray-900"
+                            id="profile-username"
+                        >
+                            Cargando...
+                        </h3>
+                        <p
+                            class="mt-1 max-w-2xl text-sm text-gray-500"
+                            id="profile-email"
+                        >
+                            ...
+                        </p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                    <dl class="sm:divide-y sm:divide-gray-200">
+                        <div
+                            class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+                        >
+                            <dt class="text-sm font-medium text-gray-500">
+                                Teléfono
+                            </dt>
+                            <dd
+                                class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
+                                id="profile-phone"
+                            >
+                                -
+                            </dd>
+                        </div>
+                        <!-- Más detalles si fuera necesario -->
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Tablón de Calificaciones -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div
+                    class="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center"
+                >
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Kardex de Calificaciones
+                    </h3>
+                    <!-- Botón para demo: Añadir calificación (solo visible si admin o para probar) -->
+                    <button
+                        id="add-grade-btn"
+                        class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded hover:bg-emerald-200 transition-colors"
+                    >
+                        + Simular Calificación
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Materia
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Cuatrimestre
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Calificación
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Estado
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            class="bg-white divide-y divide-gray-200"
+                            id="grades-body"
+                        >
+                            <!-- Las calificaciones se cargarán aquí -->
+                            <tr>
+                                <td
+                                    colspan="4"
+                                    class="px-6 py-4 text-center text-sm text-gray-500"
+                                >
+                                    Cargando calificaciones...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</LayoutBase>
+
+<script>
+    // Lógica del cliente para cargar datos
+    document.addEventListener("DOMContentLoaded", async () => {
+        const userStr = localStorage.getItem("user_info");
+        const auth = localStorage.getItem("admin_auth");
+
+        if (!auth || !userStr) {
+            window.location.href = "/Auth/login";
+            return;
+        }
+
+        const user = JSON.parse(userStr);
+
+        // Llenar datos del perfil
+        const usernameEl = document.getElementById("profile-username");
+        const emailEl = document.getElementById("profile-email");
+        const phoneEl = document.getElementById("profile-phone");
+        const imgEl = document.getElementById(
+            "profile-image",
+        ) as HTMLImageElement;
+
+        if (usernameEl) usernameEl.textContent = user.username;
+        if (emailEl) emailEl.textContent = user.email;
+        if (phoneEl) phoneEl.textContent = user.phone || "No registrado";
+        if (imgEl && user.profile_picture) imgEl.src = user.profile_picture;
+
+        // Cargar calificaciones (Simuladas o desde API)
+        // Como no creamos un endpoint de "get grades", lo simularemos o crearemos uno rápido si es necesario.
+        // Para este paso, haré que el botón añada una fila localmente y guarde en localStorage para persistencia básica de demo
+        // O idealmente, fetch a un endpoint.
+
+        loadGrades(user.id);
+
+        const addBtn = document.getElementById("add-grade-btn");
+        if (addBtn) {
+            addBtn.addEventListener("click", () => {
+                addRandomGrade(user.id);
+            });
+        }
+    });
+
+    function loadGrades(userId) {
+        // Simulación: leer de localStorage 'demo_grades_' + userId
+        // En una app real: fetch(`/api/grades?userId=${userId}`)
+
+        const gradesBody = document.getElementById("grades-body");
+        if (!gradesBody) return;
+
+        const storedGrades = localStorage.getItem(`demo_grades_${userId}`);
+        let grades = [];
+
+        if (storedGrades) {
+            grades = JSON.parse(storedGrades);
+        } else {
+            // Datos semilla iniciales
+            grades = [
+                { subject: "Matemáticas I", semester: "1°", grade: 95 },
+                {
+                    subject: "Programación Estructurada",
+                    semester: "1°",
+                    grade: 100,
+                },
+                { subject: "Inglés I", semester: "1°", grade: 85 },
+            ];
+            localStorage.setItem(
+                `demo_grades_${userId}`,
+                JSON.stringify(grades),
+            );
+        }
+
+        renderGrades(grades);
+    }
+
+    function renderGrades(grades) {
+        const gradesBody = document.getElementById("grades-body");
+        if (!gradesBody) return;
+
+        gradesBody.innerHTML = "";
+
+        if (grades.length === 0) {
+            gradesBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                        No hay calificaciones registradas.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        grades.forEach((grade) => {
+            const status = grade.grade >= 70 ? "Aprobado" : "Reprobado";
+            const statusColor =
+                grade.grade >= 70
+                    ? "text-green-600 bg-green-100"
+                    : "text-red-600 bg-red-100";
+
+            const row = `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${grade.subject}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${grade.semester}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
+                        ${grade.grade}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor}">
+                            ${status}
+                        </span>
+                    </td>
+                </tr>
+            `;
+            gradesBody.innerHTML += row;
+        });
+    }
+
+    function addRandomGrade(userId) {
+        const subjects = [
+            "Base de Datos",
+            "Redes",
+            "Desarrollo Web",
+            "IoT",
+            "Inteligencia Artificial",
+            "Ética",
+        ];
+        const randomSubject =
+            subjects[Math.floor(Math.random() * subjects.length)];
+        const randomGrade = Math.floor(Math.random() * 41) + 60; // 60-100
+
+        const newGrade = {
+            subject: randomSubject,
+            semester: Math.floor(Math.random() * 9) + 1 + "°",
+            grade: randomGrade,
+        };
+
+        const storedGrades = localStorage.getItem(`demo_grades_${userId}`);
+        let grades = storedGrades ? JSON.parse(storedGrades) : [];
+        grades.push(newGrade);
+
+        localStorage.setItem(`demo_grades_${userId}`, JSON.stringify(grades));
+        renderGrades(grades);
+    }
+</script>
