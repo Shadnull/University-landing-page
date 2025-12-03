@@ -1,13 +1,32 @@
 import connectDB from '../../DB/conect.js';
 import QuejaSugerencia from '../../DB/models/QuejaSugerencia.js';
 
+// Este endpoint necesita ser 100% del lado del servidor (para aceptar POST)
+export const prerender = false;
+
 async function parseBody(request) {
   const contentType = request.headers.get('content-type') || '';
+
+  // JSON (por ejemplo, peticiones desde fetch)
   if (contentType.includes('application/json')) {
-    return await request.json();
+    try {
+      return await request.json();
+    } catch {
+      return {};
+    }
   }
-  const form = await request.formData();
-  return Object.fromEntries(form);
+
+  // Formularios HTML clásicos
+  if (
+    contentType.includes('multipart/form-data') ||
+    contentType.includes('application/x-www-form-urlencoded')
+  ) {
+    const form = await request.formData();
+    return Object.fromEntries(form);
+  }
+
+  // Sin cuerpo o tipo de contenido no soportado (por ejemplo en prerender estático)
+  return {};
 }
 
 export async function GET() {
