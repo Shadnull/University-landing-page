@@ -47,11 +47,12 @@ export const POST = async ({ request }) => {
                 message: "Login exitoso",
                 user: {
                     id: user._id,
-                    id: user._id,
                     username: user.username,
                     email: user.email,
                     phone: user.phone,
-                    profile_picture: user.profile_picture
+                    profile_picture: user.profile_picture,
+                    matricula: user.matricula,
+                    career: user.career,
                 },
             }),
             { status: 200 }
