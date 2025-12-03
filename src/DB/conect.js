@@ -1,10 +1,19 @@
 import mongoose from 'mongoose';
-mongoose.set('debug', true);
 
-const MONGODB_URI = 'mongodb+srv://kinglyshade_db_user:LzWyfJZOksGHKMPj@ulp.bnzc439.mongodb.net/?appName=ulp';
+// Habilita logs de Mongoose solo en desarrollo
+if (process.env.NODE_ENV !== 'production') {
+  mongoose.set('debug', true);
+}
+
+// Lee la URI desde variables de entorno (Astro expone import.meta.env y process.env)
+const MONGODB_URI =
+  process.env.MONGODB_URI ||
+  (typeof import.meta !== 'undefined' ? import.meta.env.MONGODB_URI : undefined);
 
 if (!MONGODB_URI) {
-    console.error('Error: MONGODB_URI no está definido. Por favor define MONGODB_URI en las variables de entorno');
+  console.error(
+    'Error: MONGODB_URI no está definido. Crea un archivo .env con la variable MONGODB_URI y la cadena de conexión de tu base de datos.',
+  );
 }
 
 // Variable para tracking de la promesa de conexión
