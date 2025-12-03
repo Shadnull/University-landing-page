@@ -1,0 +1,82 @@
+# Profile Management Implementation Plan
+
+The goal is to implement the ability for users to update their profile information and delete their account, as requested. Currently, the project has database connection and auth logic, but [profile.astro](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/profile.astro) is read-only and relies on local storage.
+
+## User Review Required
+> [!IMPORTANT]
+> The current authentication implementation stores passwords in **plain text**. This plan does **not** address that security flaw, as it focuses on the requested features (update/delete).
+> The new endpoints will rely on the `userId` sent from the client (which is insecure but consistent with the current "demo" state of the app). Ideally, we should implement session-based auth or JWTs.
+
+## Proposed Changes
+
+### API Layer
+We will create new endpoints to handle user operations.
+
+#### [NEW] [update.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/update.js)
+- **Purpose**: Handle POST/PUT requests to update user details.
+- **Logic**:
+    - Connect to DB.
+    - Find user by ID.
+    - Update fields (username, email, phone, profile_picture, **matricula**, **career**).
+    - Return updated user data.
+
+#### [NEW] [delete.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/delete.js)
+- **Purpose**: Handle DELETE requests to remove a user.
+- **Logic**:
+    - Connect to DB.
+    - Delete user by ID.
+    - Return success message.
+
+### Database Layer
+
+#### [MODIFY] [User.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/DB/models/User.js)
+- **Changes**:
+    - Add `matricula` field (String, unique, sparse/optional initially to avoid breaking existing users, or default to empty).
+    - Add `career` field (String, default: '').
+
+### Frontend Layer
+
+#### [MODIFY] [register.astro](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/Auth/register.astro)
+- **UI Changes**:
+    - Add input field for "Matricula".
+- **Logic Changes**:
+    - Send `matricula` in the POST request.
+    - Add select input for "Carrera" (Career).
+    - Send `career` in the POST request.
+
+#### [MODIFY] [register.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/auth/register.js)
+- **Logic Changes**:
+    - Receive and save `matricula`.
+    - Check for duplicate `matricula`.
+    - Receive and save `career`.
+
+#### [MODIFY] [profile.astro](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/profile.astro)
+- **UI Changes**:
+    - **Design Upgrade**: Use a more modern card layout, better typography, and "glassmorphism" touches or cleaner shadows as requested.
+    - Display "Matricula".
+    - Display "Carrera".
+    - Add "Editar Perfil" (Edit Profile) button.
+    - Add "Eliminar Cuenta" (Delete Account) button (danger zone).
+    - Add a Modal or inline form to edit fields (including Matricula and Career).
+- **Logic Changes**:
+    - `updateProfile(userId, newData)`: Call the update API.
+    - `deleteAccount(userId)`: Call the delete API.
+    - Update `localStorage` and UI upon successful update.
+    - Redirect to Login/Home upon successful deletion.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Update Profile**:
+    - Log in.
+    - Go to Profile.
+    - Click "Edit". Change phone number or username.
+    - Save.
+    - Verify UI updates immediately.
+    - Reload page (data should persist if we update localStorage correctly).
+    - Check DB (optional, but UI persistence confirms API success).
+2.  **Delete Account**:
+    - Click "Delete Account".
+    - Confirm dialog.
+    - Verify redirection to Login.
+    - Try to log in again with old credentials (should fail).

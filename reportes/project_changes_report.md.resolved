@@ -1,0 +1,61 @@
+# Project Implementation Report
+
+This document details the recent changes and features implemented in the University Landing Page project.
+
+## 1. New Features Overview
+We have successfully implemented a comprehensive user management system update, focusing on profile customization and student identification.
+
+-   **Student Identification ("Matrícula")**: Added a unique identifier field for students.
+-   **Career Selection**: Users can now select and update their academic career.
+-   **Profile Management**: Users can now update their personal information.
+-   **Account Deletion**: Users have the ability to permanently delete their account.
+-   **UI/UX Overhaul**: A complete redesign of the profile interface for a modern, premium feel.
+
+## 2. Backend & Database Changes
+
+### Database Models
+-   **File**: [src/DB/models/User.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/DB/models/User.js)
+-   **Change**: Added the `matricula` field to the User schema.
+    -   Type: String
+    -   Unique: Yes
+    -   Sparse: Yes (allows existing users to remain without a matricula initially)
+-   **Change**: Added the `career` field to the User schema.
+    -   Type: String
+    -   Default: Empty string
+
+### API Endpoints
+
+#### Registration API
+-   **File**: [src/pages/api/auth/register.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/auth/register.js)
+-   **Update**: Modified to accept, validate, and save the `matricula` and `career` fields during user registration.
+
+#### User Update API (New)
+-   **File**: [src/pages/api/user/update.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/update.js)
+-   **Functionality**: Handles [PUT](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/update.js#6-90) requests to update user details.
+-   **Fields Supported**: Username, Email, Phone, Profile Picture, Matricula, and Career.
+-   **Validation**: Checks for duplicate emails, usernames, or matriculas before updating.
+
+#### User Delete API (New)
+-   **File**: [src/pages/api/user/delete.js](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/delete.js)
+-   **Functionality**: Handles [DELETE](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/api/user/delete.js#6-50) requests to permanently remove a user document from the database by ID.
+
+## 3. Frontend & Views
+
+### Registration Page
+-   **File**: [src/pages/Auth/register.astro](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/Auth/register.astro)
+-   **Change**: Added a new input field for "Matrícula" and a dropdown for "Carrera" in the registration form.
+-   **Logic**: Updated the form submission script to include the matricula and career in the payload sent to the API.
+
+### Profile Page
+-   **File**: [src/pages/profile.astro](file:///c:/Users/ulije/OneDrive/Desktop/Proyecto_De_Liz/University-landing-page/src/pages/profile.astro)
+-   **Visual Redesign**:
+    -   Implemented a modern "Card" layout with a gradient header.
+    -   Improved typography and spacing.
+    -   Added a "Glassmorphism" feel to UI elements.
+-   **New Interactivity**:
+    -   **Edit Profile**: Added an "Editar Perfil" button that opens a modal window.
+    -   **Modal Form**: Allows users to edit their Username, Matricula, Career, Email, Phone, and Profile Picture URL.
+    -   **Delete Account**: Added a "Eliminar Cuenta" button (red/danger style) with a confirmation dialog.
+-   **Technical Improvements**:
+    -   Fixed TypeScript errors (`Property 'src' does not exist...`) by adding proper type assertions (`as HTMLImageElement`, `as HTMLInputElement`).
+    -   Integrated the frontend with the new `update` and `delete` APIs.
